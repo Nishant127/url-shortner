@@ -86,9 +86,9 @@ WSGI_APPLICATION = "url_shortner.config.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "urlshortner",
-        "USER": "nishant",
-        "PASSWORD": "nishant",
+        "NAME": env("DATABASE_NAME"),
+        "USER": env("DATABASE_USER"),
+        "PASSWORD": env("DATABASE_PASSWORD"),
         "HOST": "localhost",
         "PORT": "3306",
     }
