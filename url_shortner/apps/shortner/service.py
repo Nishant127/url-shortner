@@ -4,6 +4,7 @@ from random import choice
 from .models import Shortner
 from django.core.exceptions import ObjectDoesNotExist
 from .exceptions import URL_DOES_NOT_EXIST_EXCEPTION
+from django.contrib.sites.models import Site
 
 
 class ShortnerService:
@@ -18,15 +19,22 @@ class ShortnerService:
     @classmethod
     def get_unique_short_url_code(cls):
         short_url_code = cls.generate_random_code()
-        if Shortner.objects.filter(short_url=short_url_code).exists():
+        if Shortner.objects.filter(short_url=short_url_code, is_active=True).exists():
             return cls.generate_random_code()
         return short_url_code
 
     @classmethod
     def save_short_url(cls, original_url):
-        short_url_code = cls.get_unique_short_url_code()
-        Shortner.objects.create(original_url=original_url, short_url=short_url_code)
-        return short_url_code
+        if Shortner.objects.filter(original_url=original_url, is_active=True).exists():
+            short_url_code = Shortner.objects.get(
+                original_url=original_url, is_active=True
+            ).short_url
+        else:
+            short_url_code = cls.get_unique_short_url_code()
+            Shortner.objects.create(original_url=original_url, short_url=short_url_code)
+        current_site = Site.objects.get_current()
+        short_url = current_site.domain + short_url_code
+        return short_url
 
     @classmethod
     def get_original_url(cls, short_url_code):

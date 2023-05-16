@@ -12,9 +12,7 @@ class UrlShortnerView(APIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         original_url = serializer.data["url"]
-        short_url_code = ShortnerService.save_short_url(original_url)
-        current_site = Site.objects.get_current()
-        short_url = current_site.domain + short_url_code
+        short_url = ShortnerService.save_short_url(original_url)
         return response.Response(
             data={"short_url": short_url}, status=status.HTTP_200_OK
         )
