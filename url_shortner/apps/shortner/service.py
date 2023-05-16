@@ -35,3 +35,12 @@ class ShortnerService:
             return short_url.original_url
         except ObjectDoesNotExist as e:
             raise URL_DOES_NOT_EXIST_EXCEPTION
+
+    @classmethod
+    def update_long_url(cls, short_url_code, long_url):
+        try:
+            short_url = Shortner.objects.get(short_url=short_url_code, is_active=True)
+            short_url.original_url = long_url
+            short_url.save()
+        except ObjectDoesNotExist as e:
+            raise URL_DOES_NOT_EXIST_EXCEPTION
