@@ -2,6 +2,8 @@ from string import ascii_letters, digits
 from django.conf import settings
 from random import choice
 from .models import Shortner
+from django.core.exceptions import ObjectDoesNotExist
+from .exceptions import URL_DOES_NOT_EXIST_EXCEPTION
 
 
 class ShortnerService:
@@ -25,3 +27,11 @@ class ShortnerService:
         short_url_code = cls.get_unique_short_url_code()
         Shortner.objects.create(original_url=original_url, short_url=short_url_code)
         return short_url_code
+
+    @classmethod
+    def get_original_url(cls, short_url_code):
+        try:
+            short_url = Shortner.objects.get(short_url=short_url_code, is_active=True)
+            return short_url.original_url
+        except ObjectDoesNotExist as e:
+            raise URL_DOES_NOT_EXIST_EXCEPTION
