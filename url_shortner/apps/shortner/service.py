@@ -24,3 +24,4 @@ class ShortnerService:
     def save_short_url(cls, original_url):
         short_url_code = cls.get_unique_short_url_code()
         Shortner.objects.create(original_url=original_url, short_url=short_url_code)
+        return short_url_code
