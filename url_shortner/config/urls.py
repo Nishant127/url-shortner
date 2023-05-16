@@ -16,5 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from url_shortner.apps.shortner.api.urls import urlpatterns as shortner_urls
 
-urlpatterns = [path("admin/", admin.site.urls)]
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("shortner/", include(shortner_urls), name="shortner"),
+]
