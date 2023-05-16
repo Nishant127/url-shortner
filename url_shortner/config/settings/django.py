@@ -29,8 +29,7 @@ env = environ.Env()
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-+wtaoen8v@eizxfn9$vm3_^nb+bh&dv(^p*-=)9b4n)mk(ez4h"
-
+SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -84,9 +83,13 @@ WSGI_APPLICATION = "url_shortner.config.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'urlshortner',
+        'USER': 'nishant',
+        'PASSWORD': 'nishant',
+        'HOST':'localhost',
+        'PORT':'3306',
     }
 }
 
