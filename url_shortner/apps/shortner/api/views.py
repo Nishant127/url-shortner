@@ -40,3 +40,12 @@ class UrlShortnerView(APIView):
             data={"message": "URL updated successfully"},
             status=status.HTTP_200_OK,
         )
+
+    def delete(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        original_url = serializer.data["url"]
+        ShortnerService.delete_url(original_url)
+        return response.Response(
+            status=status.HTTP_204_NO_CONTENT,
+        )

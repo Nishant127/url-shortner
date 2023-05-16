@@ -44,3 +44,11 @@ class ShortnerService:
             short_url.save()
         except ObjectDoesNotExist as e:
             raise URL_DOES_NOT_EXIST_EXCEPTION
+
+    @classmethod
+    def delete_url(cls, long_url):
+        try:
+            short_url = Shortner.objects.get(original_url=long_url, is_active=True)
+            short_url.delete()
+        except ObjectDoesNotExist as e:
+            raise URL_DOES_NOT_EXIST_EXCEPTION
